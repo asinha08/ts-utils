@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package tsprotos;
+message PBError {
+    string code = 1;
+    string message = 2;
+}
