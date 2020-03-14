@@ -2,7 +2,7 @@
 
 Hello World
 
-This project gives you a simle apis
+This project gives you a simple utility function written in golang. like
   - create binary messages
   - create kafka consumner group
 
