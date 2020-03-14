@@ -1,4 +1,4 @@
-package ts_utils
+package error
 
 import (
 	"github.com/asinha08/ts-utils/tsprotos"
