@@ -6,7 +6,7 @@ import (
 	"github.com/Shopify/sarama"
 )
 
-func KafkaGroupConsumerSetUp(topic *string, groupId *string, brokerConfig *KafkaBroker, handler ConsumerGroupHandler) {
+func KafkaGroupConsumerSetUp(topic *string, groupId *string, brokerConfig *KafkaBroker, handler sarama.ConsumerGroupHandler) {
 	// Init config, specify appropriate version
 	config := sarama.NewConfig()
 	config.Version = sarama.V1_0_0_0
