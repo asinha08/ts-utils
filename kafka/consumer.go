@@ -37,8 +37,6 @@ func KafkaGroupConsumerSetUp(topic *string, groupId *string, brokerConfig *Kafka
 	ctx := context.Background()
 	for {
 		topics := []string{*topic}
-		handler := handler
-
 		err := group.Consume(ctx, topics, handler)
 		if err != nil {
 			panic(err)
