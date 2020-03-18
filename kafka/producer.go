@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func GetSyncProducer(brokerConfig *KafkaBroker, clientName string) sarama.SyncProducer {
+func SyncMessageProducer(brokerConfig *KafkaBroker, clientName string, msg *sarama.ProducerMessage) (partition int32, offset int64, err error) {
 	config := sarama.NewConfig()
 	config.Producer.Retry.Max = 3
 	config.Producer.Return.Successes = true
@@ -19,8 +19,11 @@ func GetSyncProducer(brokerConfig *KafkaBroker, clientName string) sarama.SyncPr
 	if err != nil {
 		log.Fatalln("Failed to start Sarama producer:", err)
 	}
-
-	return producer
+	partition, offset, err = producer.SendMessage(msg)
+	defer func() {
+		_ = producer.Close()
+	}()
+	return partition, offset, err
 }
 
 func GetAsyncProducer(brokerConfig *KafkaBroker, clientName string) sarama.AsyncProducer {
