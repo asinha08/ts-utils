@@ -17,7 +17,7 @@ type V3RecaptchaVerificationRequest struct {
 
 type V3RecaptchaVerificationResponse struct {
 	Success     bool      `json:"success"`
-	Score       int32     `json:"score"`
+	Score       float32   `json:"score"`
 	Action      string    `json:"action"`
 	ChallengeTs time.Time `json:"challenge_ts"`
 	Hostname    string    `json:"hostname"`
