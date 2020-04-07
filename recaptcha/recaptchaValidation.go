@@ -33,17 +33,17 @@ type payload struct {
 	Response string `json:"response"`
 }
 
-func VerifyRecaptcha(r *V3RecaptchaVerificationRequest) (recaptchaVerificationResponse V3RecaptchaVerificationResponse, isValid bool, err error) {
-	if r.Score == 0 {
+func VerifyRecaptcha(req *V3RecaptchaVerificationRequest) (res V3RecaptchaVerificationResponse, isValid bool, err error) {
+	if req.Score == 0 {
 		panic("recaptcha score is required")
 	}
-	if r.Action == "" {
+	if req.Action == "" {
 		panic("recaptcha action is required")
 	}
 
 	p := &payload{
-		Secret:   r.Secret,
-		Response: r.Response,
+		Secret:   req.Secret,
+		Response: req.Response,
 	}
 	inBytes, err := json.Marshal(p)
 	if err != nil {
@@ -60,23 +60,23 @@ func VerifyRecaptcha(r *V3RecaptchaVerificationRequest) (recaptchaVerificationRe
 		return
 	}
 
-	err = json.Unmarshal(recaptchaResponseBytes, recaptchaVerificationResponse)
+	err = json.Unmarshal(recaptchaResponseBytes, res)
 	if err != nil {
 		return
 	}
 
-	if len(recaptchaVerificationResponse.ErrorCodes) > 0 {
-		err = errors.New("invalid request : " + strings.Join(recaptchaVerificationResponse.ErrorCodes, ", "))
+	if len(res.ErrorCodes) > 0 {
+		err = errors.New("invalid request : " + strings.Join(res.ErrorCodes, ", "))
 		return
 	}
-	if recaptchaVerificationResponse.Score <= r.Score {
+	if res.Score <= req.Score {
 		err = errors.New("bots are not allowed to access this page")
 		return
 	}
-	if recaptchaVerificationResponse.Action != r.Action {
+	if res.Action != req.Action {
 		err = errors.New("invalid recaptcha action")
 		return
 	}
-	isValid = recaptchaVerificationResponse.Success
+	isValid = res.Success
 	return
 }
