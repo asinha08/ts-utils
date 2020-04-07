@@ -3,16 +3,20 @@ package recaptcha
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 )
 
 const recaptchaVerificationUrl = "https://www.google.com/recaptcha/api/siteverify"
 
 type V3RecaptchaVerificationRequest struct {
-	Secret   string `json:"secret"`
-	Response string `json:"response"`
+	Secret   string  `json:"secret"`
+	Response string  `json:"response"`
+	Action   string  `json:"action"`
+	Score    float32 `json:"score"`
 }
 
 type V3RecaptchaVerificationResponse struct {
@@ -24,8 +28,24 @@ type V3RecaptchaVerificationResponse struct {
 	ErrorCodes  []string  `json:"error-codes"`
 }
 
-func VerifyRecaptcha(r *V3RecaptchaVerificationRequest) (recaptchaVerificationResponse V3RecaptchaVerificationResponse, err error) {
-	inBytes, err := json.Marshal(r)
+type payload struct {
+	Secret   string `json:"secret"`
+	Response string `json:"response"`
+}
+
+func VerifyRecaptcha(r *V3RecaptchaVerificationRequest) (recaptchaVerificationResponse V3RecaptchaVerificationResponse, isValid bool, err error) {
+	if r.Score == 0 {
+		panic("recaptcha score is required")
+	}
+	if r.Action == "" {
+		panic("recaptcha action is required")
+	}
+
+	p := &payload{
+		Secret:   r.Secret,
+		Response: r.Response,
+	}
+	inBytes, err := json.Marshal(p)
 	if err != nil {
 		return
 	}
@@ -45,5 +65,18 @@ func VerifyRecaptcha(r *V3RecaptchaVerificationRequest) (recaptchaVerificationRe
 		return
 	}
 
+	if len(recaptchaVerificationResponse.ErrorCodes) > 0 {
+		err = errors.New("invalid request : " + strings.Join(recaptchaVerificationResponse.ErrorCodes, ", "))
+		return
+	}
+	if recaptchaVerificationResponse.Score <= r.Score {
+		err = errors.New("bots are not allowed to access this page")
+		return
+	}
+	if recaptchaVerificationResponse.Action != r.Action {
+		err = errors.New("invalid recaptcha action")
+		return
+	}
+	isValid = recaptchaVerificationResponse.Success
 	return
 }
