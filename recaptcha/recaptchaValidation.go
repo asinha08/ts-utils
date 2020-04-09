@@ -23,11 +23,11 @@ type V3RecaptchaVerificationRequest struct {
 
 type V3RecaptchaVerificationResponse struct {
 	Success        bool      `json:"success"`
-	Score          float32   `json:"score"`
-	Action         string    `json:"action"`
+	Score          float32   `json:"score,omitempty"`
+	Action         string    `json:"action,omitempty"`
 	ChallengeTs    time.Time `json:"challenge_ts"`
-	Hostname       string    `json:"hostname"`
-	ErrorCodes     []string  `json:"error-codes"`
+	Hostname       string    `json:"hostname,omitempty"`
+	ErrorCodes     []string  `json:"error-codes,omitempty"`
 	ApkPackageName string    `json:"apk_package_name,omitempty"`
 }
 
