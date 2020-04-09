@@ -53,7 +53,7 @@ func VerifyRecaptcha(req *V3RecaptchaVerificationRequest) (res *V3RecaptchaVerif
 		return
 	}
 
-	err = json.Unmarshal(recaptchaResponseBytes, res)
+	err = json.Unmarshal(recaptchaResponseBytes, &res)
 	if err != nil {
 		return
 	}
