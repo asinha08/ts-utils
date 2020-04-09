@@ -31,7 +31,7 @@ type V3RecaptchaVerificationResponse struct {
 	ApkPackageName string    `json:"apk_package_name,omitempty"`
 }
 
-func VerifyRecaptcha(req *V3RecaptchaVerificationRequest) (res V3RecaptchaVerificationResponse, isValid bool, err error) {
+func VerifyRecaptcha(req *V3RecaptchaVerificationRequest) (res *V3RecaptchaVerificationResponse, isValid bool, err error) {
 	if req.Score == 0 {
 		panic("recaptcha score is required")
 	}
