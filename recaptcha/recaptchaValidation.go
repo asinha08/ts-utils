@@ -28,7 +28,7 @@ type V3RecaptchaVerificationResponse struct {
 	ErrorCodes  []string  `json:"error-codes"`
 }
 
-type payload struct {
+type Payload struct {
 	Secret   string `json:"secret"`
 	Response string `json:"response"`
 }
@@ -41,7 +41,7 @@ func VerifyRecaptcha(req *V3RecaptchaVerificationRequest) (res V3RecaptchaVerifi
 		panic("recaptcha action is required")
 	}
 
-	p := &payload{
+	p := &Payload{
 		Secret:   req.Secret,
 		Response: req.Response,
 	}
