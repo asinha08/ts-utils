@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -17,20 +18,17 @@ type V3RecaptchaVerificationRequest struct {
 	Response string  `json:"response"`
 	Action   string  `json:"action"`
 	Score    float32 `json:"score"`
+	RemoteIP string  `json:"remoteip,omitempty"`
 }
 
 type V3RecaptchaVerificationResponse struct {
-	Success     bool      `json:"success"`
-	Score       float32   `json:"score"`
-	Action      string    `json:"action"`
-	ChallengeTs time.Time `json:"challenge_ts"`
-	Hostname    string    `json:"hostname"`
-	ErrorCodes  []string  `json:"error-codes"`
-}
-
-type Payload struct {
-	Secret   string `json:"secret"`
-	Response string `json:"response"`
+	Success        bool      `json:"success"`
+	Score          float32   `json:"score"`
+	Action         string    `json:"action"`
+	ChallengeTs    time.Time `json:"challenge_ts"`
+	Hostname       string    `json:"hostname"`
+	ErrorCodes     []string  `json:"error-codes"`
+	ApkPackageName string    `json:"apk_package_name,omitempty"`
 }
 
 func VerifyRecaptcha(req *V3RecaptchaVerificationRequest) (res V3RecaptchaVerificationResponse, isValid bool, err error) {
@@ -41,20 +39,15 @@ func VerifyRecaptcha(req *V3RecaptchaVerificationRequest) (res V3RecaptchaVerifi
 		panic("recaptcha action is required")
 	}
 
-	p := &Payload{
-		Secret:   req.Secret,
-		Response: req.Response,
-	}
-	inBytes, err := json.Marshal(p)
+	formValues := []byte((url.Values{"secret": {req.Secret}, "response": {req.Response}}).Encode())
+
+	response, err := http.Post(recaptchaVerificationUrl,
+		"application/x-www-form-urlencoded",
+		bytes.NewBuffer(formValues))
 	if err != nil {
 		return
 	}
-
-	response, err := http.Post(recaptchaVerificationUrl, "application/json", bytes.NewBuffer(inBytes))
-	if err != nil {
-		return
-	}
-
+	defer response.Body.Close()
 	recaptchaResponseBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return
