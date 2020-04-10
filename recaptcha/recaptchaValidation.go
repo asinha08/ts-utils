@@ -47,7 +47,9 @@ func VerifyRecaptcha(req *V3RecaptchaVerificationRequest) (res V3RecaptchaVerifi
 	if err != nil {
 		return
 	}
-	defer response.Body.Close()
+	defer func() {
+		_ = response.Body.Close()
+	}()
 	recaptchaResponseBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return
@@ -62,7 +64,8 @@ func VerifyRecaptcha(req *V3RecaptchaVerificationRequest) (res V3RecaptchaVerifi
 		err = errors.New("invalid request : " + strings.Join(res.ErrorCodes, ", "))
 		return
 	}
-	if req.Score <= res.Score {
+	isValidScore := req.Score <= res.Score
+	if isValidScore {
 		err = errors.New("bots are not allowed to access this page")
 		return
 	}
