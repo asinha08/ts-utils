@@ -65,7 +65,7 @@ func VerifyRecaptcha(req *V3RecaptchaVerificationRequest) (res V3RecaptchaVerifi
 		return
 	}
 	isValidScore := req.Score <= res.Score
-	if isValidScore {
+	if !isValidScore {
 		err = errors.New("bots are not allowed to access this page")
 		return
 	}
