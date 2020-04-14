@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/Shopify/sarama"
+	"os"
+	"os/signal"
 )
 
 func KafkaGroupConsumerSetUp(topic *string, groupId *string, brokerConfig *KafkaBroker, handler sarama.ConsumerGroupHandler) {
@@ -30,6 +32,18 @@ func KafkaGroupConsumerSetUp(topic *string, groupId *string, brokerConfig *Kafka
 	go func() {
 		for err := range group.Errors() {
 			fmt.Println("ERROR", err)
+		}
+	}()
+
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt)
+
+	go func() {
+		select {
+		case sig := <-c:
+			fmt.Printf("Got %s signal. Aborting...\n", sig)
+			_ = group.Close()
+			_ = client.Close()
 		}
 	}()
 
