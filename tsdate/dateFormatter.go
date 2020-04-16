@@ -28,3 +28,8 @@ func GetDateFormat() *string {
 func GetTimeInMilli(timeValue time.Time) int64 {
 	return int64(timeValue.UnixNano() / timeMilli)
 }
+
+func GetDateAndTime(date string) (formattedDate time.Time, err error) {
+	formattedDate, err = time.Parse(dateTimeTZFormat, date)
+	return
+}
