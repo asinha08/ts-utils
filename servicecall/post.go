@@ -40,7 +40,7 @@ func Post(url string, contentType string, payload []byte) (bytesRead []byte, err
 		if err != nil {
 			return
 		}
-		err = errors.New(pbError.Message)
+		err = errors.New(pbError.Code + " : " + pbError.Message)
 		return
 	}
 	return
