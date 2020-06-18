@@ -10,6 +10,8 @@ require (
 	github.com/onsi/ginkgo v1.12.1 // indirect
 	github.com/onsi/gomega v1.10.0 // indirect
 	github.com/pkg/errors v0.9.1
+	github.com/sirupsen/logrus v1.4.2
+	go.elastic.co/apm/module/apmgocql v1.8.0
 	go.mongodb.org/mongo-driver v1.3.3
 	golang.org/x/crypto v0.0.0-20200204104054-c9f3fb736b72
 )

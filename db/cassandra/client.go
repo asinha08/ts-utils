@@ -3,6 +3,7 @@ package cassandra
 import (
 	"fmt"
 	"github.com/gocql/gocql"
+	"go.elastic.co/apm/module/apmgocql"
 	"time"
 )
 
@@ -11,8 +12,11 @@ const maxRetry = 60
 var session *gocql.Session = nil
 
 func InitDBSession(host string, keySpace string, serviceName string) *gocql.Session {
+	observer := apmgocql.NewObserver()
 	cluster := gocql.NewCluster(host)
 	cluster.Keyspace = keySpace
+	cluster.QueryObserver = observer
+	cluster.BatchObserver = observer
 	var err error
 	var counter int
 	for {
