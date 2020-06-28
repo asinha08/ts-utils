@@ -26,7 +26,7 @@ func SyncMessageProducer(brokerConfig *KafkaBroker, clientName string, msg *sara
 	return partition, offset, err
 }
 
-func GetAsyncProducer(brokerConfig *KafkaBroker, clientName string) sarama.AsyncProducer {
+func GetAsyncProducer(brokerConfig *KafkaBroker, clientName string, errorChannel chan string) sarama.AsyncProducer {
 
 	config := sarama.NewConfig()
 	config.Producer.Retry.Max = 3
@@ -44,7 +44,8 @@ func GetAsyncProducer(brokerConfig *KafkaBroker, clientName string) sarama.Async
 	// Note: messages will only be returned here after all retry attempts are exhausted.
 	go func() {
 		for err := range producer.Errors() {
-			log.Fatalln("Failed to write access log entry:", err)
+			//log.Fatalln("Failed to write access log entry:", err)
+			errorChannel <- err.Error()
 		}
 	}()
 
