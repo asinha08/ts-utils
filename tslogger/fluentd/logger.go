@@ -20,10 +20,11 @@ type TSLogConfig struct {
 
 func SetFluentdLogger(config *TSLogConfig) {
 	l, err := fluent.New(fluent.Config{
-		FluentPort: config.FluentPort,
-		FluentHost: config.FluentHost,
-		Async:      true,
-		TagPrefix:  config.TagPrefix,
+		FluentPort:    config.FluentPort,
+		FluentHost:    config.FluentHost,
+		Async:         true,
+		MarshalAsJSON: true,
+		TagPrefix:     config.TagPrefix,
 	})
 	if err != nil {
 		fmt.Println(err)
