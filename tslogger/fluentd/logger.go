@@ -34,7 +34,7 @@ func SetFluentdLogger(config *TSLogConfig) {
 	logger = l
 }
 
-func LogError(data map[string]string, r *http.Request) {
+func LogError(data map[string]interface{}, r *http.Request) {
 	if logger == nil {
 		fmt.Println("Logger not set")
 		return
@@ -53,7 +53,7 @@ func LogError(data map[string]string, r *http.Request) {
 	}
 }
 
-func LogInfo(data map[string]string, r *http.Request) {
+func LogInfo(data map[string]interface{}, r *http.Request) {
 	if logger == nil {
 		fmt.Println("Logger not set")
 		return
