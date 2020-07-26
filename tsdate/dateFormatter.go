@@ -6,6 +6,7 @@ import (
 
 var dateTimeTZFormat = "2006-01-02T15:04:05Z"
 var dateFormat = "2006-01-02"
+var timeFormat = "15:04"
 
 const timeMilli = int64(time.Millisecond)
 
@@ -17,12 +18,20 @@ func DateFormatter(date *time.Time) string {
 	return date.UTC().Format(dateFormat)
 }
 
+func TimeFormatter(dateTime *time.Time) string {
+	return dateTime.UTC().Format(timeFormat)
+}
+
 func GetDateTimeTZFormat() *string {
 	return &dateTimeTZFormat
 }
 
 func GetDateFormat() *string {
 	return &dateFormat
+}
+
+func GetTimeFormat() *string {
+	return &timeFormat
 }
 
 func GetTimeInMilli(timeValue time.Time) int64 {
