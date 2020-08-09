@@ -1,8 +1,10 @@
 package fluentd
 
 import (
+	"github.com/asinha08/ts-utils/tsdate"
 	"github.com/fluent/fluent-logger-golang/fluent"
 	"net/http"
+	"time"
 )
 import "fmt"
 
@@ -41,6 +43,8 @@ func LogError(data map[string]interface{}, r *http.Request) {
 	}
 	data["logType"] = "error"
 	data["serviceName"] = serviceName
+	now := time.Now().UTC()
+	data["createdAt"] = tsdate.DateTimeTZFormatter(&now)
 	if r != nil {
 		data["REMOTE_ADDR"] = r.RemoteAddr
 		data["METHOD"] = r.Method
@@ -60,6 +64,8 @@ func LogInfo(data map[string]interface{}, r *http.Request) {
 	}
 	data["logType"] = "info"
 	data["serviceName"] = serviceName
+	now := time.Now().UTC()
+	data["createdAt"] = tsdate.DateTimeTZFormatter(&now)
 	if r != nil {
 		data["REMOTE_ADDR"] = r.RemoteAddr
 		data["METHOD"] = r.Method
