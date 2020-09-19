@@ -34,7 +34,7 @@ func GetJsonError(err *JsonError, w http.ResponseWriter, r *http.Request) {
 		"errorCode":    err.Code,
 		"errorMessage": err.Err.Error(),
 	}
-	if len(err.ExtraLogs) > 0 {
+	if err.ExtraLogs != nil && len(err.ExtraLogs) > 0 {
 		for index, item := range err.ExtraLogs {
 			logs[index] = item
 		}
