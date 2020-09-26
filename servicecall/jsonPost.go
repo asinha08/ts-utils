@@ -19,9 +19,9 @@ func JsonPost(url string, contentType string, payload []byte) (bytesRead []byte,
 		return
 	}
 	if contentType == "" {
-		err = errors.New("bad content type")
-		return
+		contentType = "application/json"
 	}
+
 	if len(payload) == 0 {
 		err = errors.New("bad payload")
 		return
