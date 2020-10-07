@@ -41,11 +41,13 @@ func GetJsonError(err *JsonError, w http.ResponseWriter, r *http.Request) {
 	}
 	logger.LogError(logs, r)
 
-	w.WriteHeader(err.Status)
-	res := &errorMessage{
-		Err:  err.Err.Error(),
-		Code: err.Code,
+	if w != nil {
+		w.WriteHeader(err.Status)
+		res := &errorMessage{
+			Err:  err.Err.Error(),
+			Code: err.Code,
+		}
+		out, _ := json.Marshal(res)
+		_, _ = w.Write(out)
 	}
-	out, _ := json.Marshal(res)
-	_, _ = w.Write(out)
 }
