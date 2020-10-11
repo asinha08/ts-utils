@@ -1,43 +1,49 @@
 package servicecall
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
-type TSJsonError struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
-}
-
-func JsonPost(url string, contentType string, payload []byte) (bytesRead []byte, err error) {
+func Request(method, url string, header map[string]string, payload []byte) (bytesRead []byte, err error) {
 	if url == "" {
 		err = errors.New("bad url")
 		return
-	}
-
-	if contentType == "" {
-		contentType = "application/json"
 	}
 
 	if len(payload) == 0 {
 		err = errors.New("bad payload")
 		return
 	}
-	response, err := http.Post(url, contentType, bytes.NewBuffer(payload))
+
+	request, err := http.NewRequest(method, url, nil)
+	if err != nil {
+		return
+	}
+
+	if header != nil && len(header) > 0 {
+		for i, v := range header {
+			request.Header.Set(i, v)
+		}
+	}
+
+	timeOut := time.Duration(5 * time.Second)
+	client := http.Client{
+		Timeout: timeOut,
+	}
+
+	response, err := client.Do(request)
+	if err != nil {
+		return
+	}
+
 	defer func() {
 		_ = response.Body.Close()
 	}()
-	if err != nil {
-		return
-	}
-	bytesRead, err = ioutil.ReadAll(response.Body)
-	if err != nil {
-		return
-	}
+
 	statusCode := response.StatusCode
 	if statusCode > 300 || statusCode < 200 {
 		tsError := &TSJsonError{}
@@ -48,5 +54,7 @@ func JsonPost(url string, contentType string, payload []byte) (bytesRead []byte,
 		err = errors.New(tsError.Code + " : " + tsError.Message)
 		return
 	}
+
+	bytesRead, err = ioutil.ReadAll(response.Body)
 	return
 }
