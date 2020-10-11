@@ -12,10 +12,8 @@ require (
 	github.com/onsi/gomega v1.10.0 // indirect
 	github.com/philhofer/fwd v1.0.0 // indirect
 	github.com/pkg/errors v0.9.1
-	github.com/prometheus/procfs v0.1.3 // indirect
 	github.com/tinylib/msgp v1.1.2 // indirect
 	go.elastic.co/apm/module/apmgocql v1.8.0
 	go.mongodb.org/mongo-driver v1.3.3
 	golang.org/x/crypto v0.0.0-20200204104054-c9f3fb736b72
-	golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1 // indirect
 )
