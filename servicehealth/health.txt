@@ -1,0 +1,14 @@
+package servicehealth
+
+import (
+	"github.com/heptiolabs/healthcheck"
+	"net/http"
+)
+
+type HealthCheckConfig struct {
+	Port string
+}
+func InitHealthCheck(config *HealthCheckConfig)  {
+	health := healthcheck.NewHandler()
+	go http.ListenAndServe("0.0.0.0:" + config.Port, health)
+}
