@@ -1,6 +1,7 @@
 package servicecall
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -14,7 +15,7 @@ func Request(method, url string, header map[string]string, payload []byte) (byte
 		return
 	}
 
-	request, err := http.NewRequest(method, url, nil)
+	request, err := http.NewRequest(method, url, bytes.NewBuffer(payload))
 	if err != nil {
 		return
 	}
