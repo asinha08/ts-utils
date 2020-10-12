@@ -26,7 +26,7 @@ func Request(method, url string, header map[string]string, payload []byte) (byte
 		}
 	}
 
-	timeOut := time.Duration(5 * time.Second)
+	timeOut := 5 * time.Second
 	client := http.Client{
 		Timeout: timeOut,
 	}
