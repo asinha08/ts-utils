@@ -14,11 +14,6 @@ func Request(method, url string, header map[string]string, payload []byte) (byte
 		return
 	}
 
-	if len(payload) == 0 {
-		err = errors.New("bad payload")
-		return
-	}
-
 	request, err := http.NewRequest(method, url, nil)
 	if err != nil {
 		return
