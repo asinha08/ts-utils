@@ -1,12 +1,13 @@
 package fluentd
 
 import (
-	"github.com/asinha08/ts-utils/tsdate"
-	"github.com/fluent/fluent-logger-golang/fluent"
+	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/asinha08/ts-utils/tsdate"
+	"github.com/fluent/fluent-logger-golang/fluent"
 )
-import "fmt"
 
 var logger *fluent.Fluent
 var tag string

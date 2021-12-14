@@ -1,9 +1,10 @@
 package kafka
 
 import (
-	"github.com/Shopify/sarama"
 	"log"
 	"time"
+
+	"github.com/Shopify/sarama"
 )
 
 func SyncMessageProducer(brokerConfig *KafkaBroker, clientName string, msg *sarama.ProducerMessage) (partition int32, offset int64, err error) {

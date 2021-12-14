@@ -2,11 +2,12 @@ package servicecall
 
 import (
 	"bytes"
-	"github.com/asinha08/ts-utils/tsprotos"
-	"github.com/golang/protobuf/proto"
-	"github.com/pkg/errors"
+	"errors"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/asinha08/ts-utils/tsprotos"
+	"github.com/golang/protobuf/proto"
 )
 
 func Post(url string, contentType string, payload []byte) (bytesRead []byte, err error) {

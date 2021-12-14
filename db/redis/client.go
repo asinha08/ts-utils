@@ -1,9 +1,11 @@
 package redis
 
 import (
+	"context"
 	"fmt"
-	"github.com/go-redis/redis"
 	"log"
+
+	"github.com/go-redis/redis/v8"
 )
 
 type ConnectionConfigRedis struct {
@@ -22,8 +24,8 @@ func InitRedisClient(config *ConnectionConfigRedis) {
 			Password: "",
 			DB:       config.DBNumber,
 		})
-
-		pong, err := redisClient.Ping().Result()
+		ctx := context.Background()
+		pong, err := redisClient.Ping(ctx).Result()
 		fmt.Println(pong, err)
 		if err != nil {
 			log.Fatal("Redis server is not reachable from ", config.ServiceName)

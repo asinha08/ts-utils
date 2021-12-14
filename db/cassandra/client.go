@@ -2,9 +2,10 @@ package cassandra
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/gocql/gocql"
 	"go.elastic.co/apm/module/apmgocql"
-	"time"
 )
 
 const maxRetry = 60

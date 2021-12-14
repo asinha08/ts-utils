@@ -1,11 +1,12 @@
-package error
+package tsError
 
 import (
 	"encoding/json"
+	"net/http"
+
 	logger "github.com/asinha08/ts-utils/tslogger/fluentd"
 	"github.com/asinha08/ts-utils/tsprotos"
 	"github.com/golang/protobuf/proto"
-	"net/http"
 )
 
 func GetError(code string, message string) []byte {
