@@ -2,13 +2,13 @@ package password
 
 import "golang.org/x/crypto/bcrypt"
 
-func EncryptPassword(password string, cost int) string {
+func EncryptPassword(password string, cost int) (string, error) {
 	pass := []byte(password)
 	hashedPassword, err := bcrypt.GenerateFromPassword(pass, cost)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
-	return string(hashedPassword)
+	return string(hashedPassword), nil
 }
 
 func DoPasswordMatch(hashedPassword, password string) (status bool) {

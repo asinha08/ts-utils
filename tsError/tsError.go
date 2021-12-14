@@ -9,13 +9,13 @@ import (
 	"github.com/golang/protobuf/proto"
 )
 
-func GetError(code string, message string) []byte {
+func GetError(code string, message string) ([]byte, error) {
 	errResponse := &tsprotos.PBError{
 		Code:    code,
 		Message: message,
 	}
-	b, _ := proto.Marshal(errResponse)
-	return b
+	b, err := proto.Marshal(errResponse)
+	return b, err
 }
 
 type JsonError struct {
