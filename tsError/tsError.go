@@ -19,10 +19,11 @@ func GetError(code string, message string) ([]byte, error) {
 }
 
 type JsonError struct {
-	Err       error
-	Code      string
-	Status    int
-	ExtraLogs map[string]interface{}
+	Err                error
+	ClientErrorMessage string
+	Code               string
+	Status             int
+	ExtraLogs          map[string]interface{}
 }
 
 type errorMessage struct {
@@ -44,8 +45,12 @@ func GetJsonError(err *JsonError, w http.ResponseWriter, r *http.Request) {
 
 	if w != nil {
 		w.WriteHeader(err.Status)
+		clientErrorMessage := err.Err.Error()
+		if err.ClientErrorMessage != "" {
+			clientErrorMessage = err.ClientErrorMessage
+		}
 		res := &errorMessage{
-			Err:  err.Err.Error(),
+			Err:  clientErrorMessage,
 			Code: err.Code,
 		}
 		out, _ := json.Marshal(res)

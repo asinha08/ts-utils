@@ -12,6 +12,7 @@ const maxRetry = 60
 
 var session *gocql.Session = nil
 
+// InitDBSession TODO: write comment
 func InitDBSession(host string, keySpace string, serviceName string) *gocql.Session {
 	observer := apmgocql.NewObserver()
 	cluster := gocql.NewCluster(host)
@@ -38,10 +39,12 @@ func InitDBSession(host string, keySpace string, serviceName string) *gocql.Sess
 	return session
 }
 
+// GetDBSession TODO: write comment
 func GetDBSession() *gocql.Session {
 	return session
 }
 
+// CloseDBSession TODO: write comment
 func CloseDBSession() {
 	session.Close()
 }
