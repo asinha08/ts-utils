@@ -3,9 +3,8 @@ package redis
 import (
 	"context"
 	"fmt"
+	redis "github.com/redis/go-redis/v9"
 	"log"
-
-	"github.com/go-redis/redis/v8"
 )
 
 type ConnectionConfigRedis struct {
@@ -13,6 +12,7 @@ type ConnectionConfigRedis struct {
 	Port        string
 	DBNumber    int
 	ServiceName string
+	Password    string
 }
 
 var redisClient *redis.Client = nil

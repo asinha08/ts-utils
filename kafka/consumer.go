@@ -3,10 +3,9 @@ package kafka
 import (
 	"context"
 	"fmt"
+	"github.com/IBM/sarama"
 	"os"
 	"os/signal"
-
-	"github.com/Shopify/sarama"
 )
 
 func KafkaGroupConsumerSetUp(topic *string, groupId *string, brokerConfig *KafkaBroker, handler sarama.ConsumerGroupHandler) {

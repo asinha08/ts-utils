@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/Shopify/sarama"
+	"github.com/IBM/sarama"
 )
 
 func SyncMessageProducer(brokerConfig *KafkaBroker, clientName string, msg *sarama.ProducerMessage) (partition int32, offset int64, err error) {
