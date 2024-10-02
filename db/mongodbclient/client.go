@@ -27,6 +27,26 @@ func InitMongoDB(config *DBConfigForMongo) (err error) {
 	return
 }
 
+func InitMongoDbClinet(config *DBConfigForMongo) (err error) {
+	// Use the SetServerAPIOptions() method to set the version of the Stable API on the client
+	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+	opts := options.Client().ApplyURI(
+		"mongodb+srv://" +
+			config.UserName +
+			":" +
+			config.Password +
+			"@" +
+			config.Host +
+			"/?retryWrites=true&w=majority&appName=" +
+			config.AppName).SetServerAPIOptions(serverAPI)
+	// Create a new client and connect to the server
+	dbClient, err = mongo.Connect(context.TODO(), opts)
+	if err != nil {
+		panic(err)
+	}
+	return
+}
+
 func GetDB() (db *mongo.Database) {
 	db = dbClient.Database(dbName)
 	return
