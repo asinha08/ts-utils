@@ -6,7 +6,7 @@ import (
 
 	logger "github.com/asinha08/ts-utils/tslogger/fluentd"
 	"github.com/asinha08/ts-utils/tsprotos"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 func GetError(code string, message string) ([]byte, error) {

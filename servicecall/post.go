@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/asinha08/ts-utils/tsprotos"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 func Post(url string, contentType string, payload []byte) (bytesRead []byte, err error) {

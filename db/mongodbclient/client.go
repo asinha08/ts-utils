@@ -27,7 +27,7 @@ func InitMongoDB(config *DBConfigForMongo) (err error) {
 	return
 }
 
-func InitMongoDbClinet(config *DBConfigForMongo) (err error) {
+func InitMongoDbClient(config *DBConfigForMongo) (err error) {
 	// Use the SetServerAPIOptions() method to set the version of the Stable API on the client
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(
