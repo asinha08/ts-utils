@@ -30,6 +30,7 @@ func InitMongoDB(config *DBConfigForMongo) (err error) {
 }
 
 func InitMongoDbClient(config *DBConfigForMongo) (err error) {
+	dbName = config.DataBaseName
 	// Use the SetServerAPIOptions() method to set the version of the Stable API on the client
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(
