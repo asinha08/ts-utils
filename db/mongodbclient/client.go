@@ -2,10 +2,12 @@ package mongodbclient
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type DBConfigForMongo struct {
@@ -44,6 +46,10 @@ func InitMongoDbClient(config *DBConfigForMongo) (err error) {
 	if err != nil {
 		panic(err)
 	}
+	if err := dbClient.Ping(context.TODO(), readpref.Primary()); err != nil {
+		panic(err)
+	}
+	fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
 	return
 }
 
