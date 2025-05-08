@@ -9,7 +9,7 @@ import (
 	recaptchaPB "cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
 )
 
-type Recaptcha struct {
+type RecaptchaAssessmentRequest struct {
 	ProjectID       string
 	RecaptchaKey    string
 	RecaptchaToken  string
@@ -17,7 +17,7 @@ type Recaptcha struct {
 	Score           float32
 }
 
-func (r *Recaptcha) Validate() (err error) {
+func (r *RecaptchaAssessmentRequest) Validate() (err error) {
 	err = nil
 	if r.ProjectID == "" {
 		err = errors.New("project ID is required")
@@ -34,7 +34,7 @@ func (r *Recaptcha) Validate() (err error) {
 	return
 }
 
-func (r *Recaptcha) ValidateRecaptcha() (response *recaptchaPB.Assessment, err error) {
+func (r *RecaptchaAssessmentRequest) ValidateRecaptcha() (response *recaptchaPB.Assessment, err error) {
 	err = r.Validate()
 	if err != nil {
 		return
