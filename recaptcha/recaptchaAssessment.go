@@ -7,9 +7,11 @@ import (
 
 	recaptcha "cloud.google.com/go/recaptchaenterprise/v2/apiv1"
 	recaptchaPB "cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
+	"google.golang.org/api/option"
 )
 
 type RecaptchaAssessmentRequest struct {
+	ApiKey          string
 	ProjectID       string
 	RecaptchaKey    string
 	RecaptchaToken  string
@@ -19,6 +21,9 @@ type RecaptchaAssessmentRequest struct {
 
 func (r *RecaptchaAssessmentRequest) Validate() (err error) {
 	err = nil
+	if r.ApiKey == "" {
+		err = errors.New("api key is required")
+	}
 	if r.ProjectID == "" {
 		err = errors.New("project ID is required")
 	}
@@ -31,6 +36,9 @@ func (r *RecaptchaAssessmentRequest) Validate() (err error) {
 	if r.RecaptchaAction == "" {
 		err = errors.New("recaptcha action is required")
 	}
+	if r.Score < 0 || r.Score > 1.0 {
+		err = errors.New("recaptcha score should be between 0 and 1")
+	}
 	return
 }
 
@@ -39,9 +47,10 @@ func (r *RecaptchaAssessmentRequest) ValidateRecaptcha() (response *recaptchaPB.
 	if err != nil {
 		return
 	}
+	clientOption := []option.ClientOption{option.WithAPIKey(r.ApiKey)}
 	// Create the reCAPTCHA client.
 	ctx := context.Background()
-	client, err := recaptcha.NewClient(ctx)
+	client, err := recaptcha.NewClient(ctx, clientOption...)
 	if err != nil {
 		fmt.Printf("Error creating reCAPTCHA client\n")
 	}
